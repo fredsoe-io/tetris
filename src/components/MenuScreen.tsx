@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { TETRIMINOS, COPIES, type Tetrimino } from '@/lib/deck'
+import { TETRIMINOS, COPIES, PIECE_COLORS, pieceImageSrc, totalCards, type Tetrimino } from '@/lib/deck'
 
 const INTERVAL_OPTIONS = [5, 10, 15, 30, 60]
 
@@ -16,8 +16,6 @@ export default function MenuScreen({ intervalSeconds, onIntervalChange, onStart 
   const [copies, setCopies] = useState<Record<Tetrimino, number>>({ ...COPIES })
   const [editing, setEditing] = useState<Tetrimino | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-
-  const deckSize = Object.values(copies).reduce((a, b) => a + b, 0)
 
   function startEditing(t: Tetrimino) {
     setEditing(t)
@@ -62,13 +60,16 @@ export default function MenuScreen({ intervalSeconds, onIntervalChange, onStart 
       {/* Deck breakdown */}
       <div className="w-full max-w-xs flex flex-col gap-2">
         <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest text-center">
-          Deck — {deckSize} cards
+          Deck — {totalCards(copies)} cards
         </p>
         <div className="grid grid-cols-7 gap-1">
           {TETRIMINOS.map((t) => (
             <div key={t} className="flex flex-col items-center gap-1">
-              <div className="relative w-10 h-10">
-                <Image src={`/tetriminos/${t}.png`} alt={`${t} piece`} fill style={{ objectFit: 'contain' }} />
+              <div
+                className="relative w-10 h-10 rounded-lg"
+                style={{ backgroundColor: `${PIECE_COLORS[t]}22`, border: `2px solid ${PIECE_COLORS[t]}` }}
+              >
+                <Image src={pieceImageSrc(t)} alt={`${t} piece`} fill style={{ objectFit: 'contain', padding: '10%' }} />
               </div>
               {editing === t ? (
                 <input

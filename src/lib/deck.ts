@@ -6,7 +6,23 @@ export const COPIES: Record<Tetrimino, number> = {
   I: 4, J: 3, L: 3, O: 4, S: 3, T: 4, Z: 3,
 }
 
-export const DECK_SIZE = Object.values(COPIES).reduce((a, b) => a + b, 0) // 24
+export const PIECE_COLORS: Record<Tetrimino, string> = {
+  I: '#00f0f0',
+  J: '#0000f0',
+  L: '#f0a000',
+  O: '#f0f000',
+  S: '#00f000',
+  T: '#a000f0',
+  Z: '#f00000',
+}
+
+export function pieceImageSrc(t: Tetrimino): string {
+  return `/tetriminos/${t}.png`
+}
+
+export function totalCards(copies: Record<Tetrimino, number>): number {
+  return TETRIMINOS.reduce((sum, t) => sum + copies[t], 0)
+}
 
 export interface DeckState {
   remaining: Tetrimino[]
@@ -40,15 +56,11 @@ export function createDeck(copies: Record<Tetrimino, number> = COPIES): DeckStat
 
 export function drawFromDeck(deck: DeckState): DeckState {
   if (deck.current === null) return deck
-  const newDrawn = [...deck.drawn, deck.current]
-  const newCurrent = deck.next
-  const newNext = deck.remaining[0] ?? null
-  const newRemaining = deck.remaining.slice(1)
   return {
-    drawn: newDrawn,
-    current: newCurrent,
-    next: newNext,
-    remaining: newRemaining,
+    drawn: [...deck.drawn, deck.current],
+    current: deck.next,
+    next: deck.remaining[0] ?? null,
+    remaining: deck.remaining.slice(1),
   }
 }
 

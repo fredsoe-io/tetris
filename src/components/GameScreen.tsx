@@ -1,12 +1,12 @@
 'use client'
 
 import type { DeckState } from '@/lib/deck'
-import { DECK_SIZE } from '@/lib/deck'
 import TetriminoCard from './TetriminoCard'
 import CountdownRing from './CountdownRing'
 
 interface Props {
   deck: DeckState
+  deckSize: number
   secondsLeft: number
   intervalSeconds: number
   isPaused: boolean
@@ -18,6 +18,7 @@ interface Props {
 
 export default function GameScreen({
   deck,
+  deckSize,
   secondsLeft,
   intervalSeconds,
   isPaused,
@@ -27,15 +28,14 @@ export default function GameScreen({
   onSkip,
 }: Props) {
   const drawnCount = deck.drawn.length + (deck.current ? 1 : 0)
-  const isFinished = deck.current === null
 
-  if (isFinished) {
+  if (deck.current === null) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-8 bg-slate-950 px-6">
         <div className="flex flex-col items-center gap-3">
           <span className="text-6xl">🎉</span>
           <h2 className="text-3xl font-black text-white">Deck exhausted!</h2>
-          <p className="text-slate-400">All 28 pieces have been drawn.</p>
+          <p className="text-slate-400">All {deckSize} pieces have been drawn.</p>
         </div>
         <button
           onClick={onExit}
@@ -58,7 +58,7 @@ export default function GameScreen({
           Exit
         </button>
         <span className="text-slate-400 text-sm font-medium">
-          {drawnCount} / {DECK_SIZE}
+          {drawnCount} / {deckSize}
         </span>
         <button
           onClick={isPaused ? onResume : onPause}
@@ -99,7 +99,7 @@ export default function GameScreen({
       <div className="flex flex-col items-center gap-2 px-8 pb-4">
         <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold">Current</p>
         <div className="w-full max-w-[260px]">
-          <TetriminoCard piece={deck.current!} size="large" />
+          <TetriminoCard piece={deck.current} size="large" />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { createDeck, drawFromDeck, type DeckState, type Tetrimino } from '@/lib/deck'
+import { createDeck, drawFromDeck, totalCards, COPIES, type DeckState, type Tetrimino } from '@/lib/deck'
 import { useGameTimer } from '@/hooks/useGameTimer'
 import { playTimerDing } from '@/lib/sound'
 import MenuScreen from './MenuScreen'
@@ -13,6 +13,7 @@ export default function TetrisApp() {
   const [screen, setScreen] = useState<Screen>('menu')
   const [intervalSeconds, setIntervalSeconds] = useState(15)
   const [deck, setDeck] = useState<DeckState>(() => createDeck())
+  const [deckSize, setDeckSize] = useState(() => totalCards(COPIES))
 
   const drawNext = useCallback((withSound = false) => {
     setDeck((d) => drawFromDeck(d))
@@ -33,8 +34,8 @@ export default function TetrisApp() {
   }, [drawNext, reset, intervalSeconds])
 
   function handleStart(copies: Record<Tetrimino, number>) {
-    const freshDeck = createDeck(copies)
-    setDeck(freshDeck)
+    setDeck(createDeck(copies))
+    setDeckSize(totalCards(copies))
     reset(intervalSeconds)
     setScreen('game')
   }
@@ -43,15 +44,11 @@ export default function TetrisApp() {
     setScreen('menu')
   }
 
-  function handleIntervalChange(s: number) {
-    setIntervalSeconds(s)
-  }
-
   if (screen === 'menu') {
     return (
       <MenuScreen
         intervalSeconds={intervalSeconds}
-        onIntervalChange={handleIntervalChange}
+        onIntervalChange={setIntervalSeconds}
         onStart={handleStart}
       />
     )
@@ -60,6 +57,7 @@ export default function TetrisApp() {
   return (
     <GameScreen
       deck={deck}
+      deckSize={deckSize}
       secondsLeft={secondsLeft}
       intervalSeconds={intervalSeconds}
       isPaused={isPaused}
