@@ -1,0 +1,53 @@
+export type Tetrimino = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
+
+export const TETRIMINOS: Tetrimino[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+export const COPIES_PER_PIECE = 4
+export const DECK_SIZE = TETRIMINOS.length * COPIES_PER_PIECE // 28
+
+export interface DeckState {
+  remaining: Tetrimino[]
+  drawn: Tetrimino[]
+  current: Tetrimino | null
+  next: Tetrimino | null
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+export function createDeck(): DeckState {
+  const full: Tetrimino[] = []
+  for (const t of TETRIMINOS) {
+    for (let i = 0; i < COPIES_PER_PIECE; i++) full.push(t)
+  }
+  const shuffled = shuffle(full)
+  return {
+    current: shuffled[0],
+    next: shuffled[1] ?? null,
+    remaining: shuffled.slice(2),
+    drawn: [],
+  }
+}
+
+export function drawFromDeck(deck: DeckState): DeckState {
+  if (deck.current === null) return deck
+  const newDrawn = [...deck.drawn, deck.current]
+  const newCurrent = deck.next
+  const newNext = deck.remaining[0] ?? null
+  const newRemaining = deck.remaining.slice(1)
+  return {
+    drawn: newDrawn,
+    current: newCurrent,
+    next: newNext,
+    remaining: newRemaining,
+  }
+}
+
+export function isDeckExhausted(deck: DeckState): boolean {
+  return deck.current === null
+}

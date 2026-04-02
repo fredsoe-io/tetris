@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+@keyframes ring-deplete {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 226.195px; }
+}
