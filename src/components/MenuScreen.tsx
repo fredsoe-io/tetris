@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { TETRIMINOS, COPIES, PIECE_COLORS, pieceImageSrc, totalCards, type Tetrimino } from '@/lib/deck'
 
@@ -15,11 +15,9 @@ interface Props {
 export default function MenuScreen({ intervalSeconds, onIntervalChange, onStart }: Props) {
   const [copies, setCopies] = useState<Record<Tetrimino, number>>({ ...COPIES })
   const [editing, setEditing] = useState<Tetrimino | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
 
   function startEditing(t: Tetrimino) {
     setEditing(t)
-    setTimeout(() => inputRef.current?.select(), 0)
   }
 
   function commitEdit(t: Tetrimino, raw: string) {
@@ -73,8 +71,9 @@ export default function MenuScreen({ intervalSeconds, onIntervalChange, onStart 
               </div>
               {editing === t ? (
                 <input
-                  ref={inputRef}
+                  autoFocus
                   type="number"
+                  inputMode="numeric"
                   min={0}
                   defaultValue={copies[t]}
                   onBlur={(e) => commitEdit(t, e.target.value)}
