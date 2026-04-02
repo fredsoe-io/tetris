@@ -82,8 +82,8 @@ export default function GameScreen({
       </div>
 
       {/* Next piece */}
-      <div className="flex items-center justify-center gap-4">
-        <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest">Next</p>
+      <div className="flex flex-col items-center gap-1">
+        <p className="text-slate-500 text-xs font-semibold uppercase tracking-widest">Next</p>
         {deck.next ? (
           <TetriminoCard piece={deck.next} size="small" />
         ) : (
@@ -92,12 +92,11 @@ export default function GameScreen({
       </div>
 
       {/* Current piece */}
-      <div className="flex flex-col items-center gap-2 px-4 pb-4">
+      <div className="flex flex-col items-center gap-2 px-8 pb-4">
         <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold">Current</p>
-        <div className="w-full max-w-xs">
+        <div className="w-full max-w-[260px]">
           <TetriminoCard piece={deck.current!} size="large" />
         </div>
-        <p className="text-slate-200 text-2xl font-black">{deck.current}-piece</p>
       </div>
     </div>
   )
