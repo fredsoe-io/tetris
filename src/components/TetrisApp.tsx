@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { createDeck, drawFromDeck, type DeckState } from '@/lib/deck'
 import { useGameTimer } from '@/hooks/useGameTimer'
+import { playTimerDing } from '@/lib/sound'
 import MenuScreen from './MenuScreen'
 import GameScreen from './GameScreen'
 
@@ -13,13 +14,16 @@ export default function TetrisApp() {
   const [intervalSeconds, setIntervalSeconds] = useState(15)
   const [deck, setDeck] = useState<DeckState>(() => createDeck())
 
-  const drawNext = useCallback(() => {
+  const drawNext = useCallback((withSound = false) => {
     setDeck((d) => drawFromDeck(d))
+    if (withSound) playTimerDing()
   }, [])
+
+  const onTimerTick = useCallback(() => drawNext(true), [drawNext])
 
   const { secondsLeft, isPaused, pause, resume, reset } = useGameTimer(
     intervalSeconds,
-    drawNext,
+    onTimerTick,
     screen === 'game',
   )
 
