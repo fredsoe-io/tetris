@@ -13,6 +13,7 @@ interface Props {
   onPause: () => void
   onResume: () => void
   onExit: () => void
+  onSkip: () => void
 }
 
 export default function GameScreen({
@@ -23,6 +24,7 @@ export default function GameScreen({
   onPause,
   onResume,
   onExit,
+  onSkip,
 }: Props) {
   const drawnCount = deck.drawn.length + (deck.current ? 1 : 0)
   const isFinished = deck.current === null
@@ -81,11 +83,13 @@ export default function GameScreen({
         />
       </div>
 
-      {/* Next piece */}
+      {/* Next piece — tap to skip */}
       <div className="flex flex-col items-center gap-1">
         <p className="text-slate-500 text-xs font-semibold uppercase tracking-widest">Next</p>
         {deck.next ? (
-          <TetriminoCard piece={deck.next} size="small" />
+          <button onClick={onSkip} className="active:scale-95 transition-transform">
+            <TetriminoCard piece={deck.next} size="small" />
+          </button>
         ) : (
           <span className="text-slate-600 text-sm">Last piece</span>
         )}

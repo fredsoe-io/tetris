@@ -10,7 +10,7 @@ type Screen = 'menu' | 'game'
 
 export default function TetrisApp() {
   const [screen, setScreen] = useState<Screen>('menu')
-  const [intervalSeconds, setIntervalSeconds] = useState(10)
+  const [intervalSeconds, setIntervalSeconds] = useState(15)
   const [deck, setDeck] = useState<DeckState>(() => createDeck())
 
   const drawNext = useCallback(() => {
@@ -22,6 +22,11 @@ export default function TetrisApp() {
     drawNext,
     screen === 'game',
   )
+
+  const handleSkip = useCallback(() => {
+    drawNext()
+    reset(intervalSeconds)
+  }, [drawNext, reset, intervalSeconds])
 
   function handleStart() {
     const freshDeck = createDeck()
@@ -57,6 +62,7 @@ export default function TetrisApp() {
       onPause={pause}
       onResume={resume}
       onExit={handleExit}
+      onSkip={handleSkip}
     />
   )
 }
