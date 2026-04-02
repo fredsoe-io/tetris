@@ -17,7 +17,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: tetris
-          image: ghcr.io/jacobfredsoee/tetris:latest
+          image: ghcr.io/fredsoe-io/tetris:latest
           ports:
             - containerPort: 3000
           readinessProbe:

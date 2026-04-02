@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE: ghcr.io/jacobfredsoee/tetris
+  IMAGE: ghcr.io/fredsoe-io/tetris
 
 jobs:
   build-and-deploy:
