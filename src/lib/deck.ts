@@ -2,7 +2,7 @@ export type Tetrimino = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'
 
 export const TETRIMINOS: Tetrimino[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
 
-const COPIES: Record<Tetrimino, number> = {
+export const COPIES: Record<Tetrimino, number> = {
   I: 4, J: 3, L: 3, O: 4, S: 3, T: 4, Z: 3,
 }
 
@@ -24,10 +24,10 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-export function createDeck(): DeckState {
+export function createDeck(copies: Record<Tetrimino, number> = COPIES): DeckState {
   const full: Tetrimino[] = []
   for (const t of TETRIMINOS) {
-    for (let i = 0; i < COPIES[t]; i++) full.push(t)
+    for (let i = 0; i < copies[t]; i++) full.push(t)
   }
   const shuffled = shuffle(full)
   return {

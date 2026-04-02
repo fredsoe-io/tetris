@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { createDeck, drawFromDeck, type DeckState } from '@/lib/deck'
+import { createDeck, drawFromDeck, type DeckState, type Tetrimino } from '@/lib/deck'
 import { useGameTimer } from '@/hooks/useGameTimer'
 import { playTimerDing } from '@/lib/sound'
 import MenuScreen from './MenuScreen'
@@ -32,8 +32,8 @@ export default function TetrisApp() {
     reset(intervalSeconds)
   }, [drawNext, reset, intervalSeconds])
 
-  function handleStart() {
-    const freshDeck = createDeck()
+  function handleStart(copies: Record<Tetrimino, number>) {
+    const freshDeck = createDeck(copies)
     setDeck(freshDeck)
     reset(intervalSeconds)
     setScreen('game')
