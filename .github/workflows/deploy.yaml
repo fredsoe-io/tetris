@@ -39,6 +39,6 @@ jobs:
 
       - name: Deploy
         run: |
-          kubectl apply -f k8s/
+          kubectl apply --validate=false -f k8s/
           kubectl set image deployment/tetris tetris=${{ env.IMAGE }}:${{ github.sha }} -n fredsoe-io
           kubectl rollout status deployment/tetris -n fredsoe-io --timeout=120s
